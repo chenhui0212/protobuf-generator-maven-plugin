@@ -9,19 +9,6 @@
     <version>1.0-SNAPSHOT</version>
     <packaging>maven-plugin</packaging>
 
-    <distributionManagement>
-        <repository>
-            <id>nexus-releases</id>
-            <name>Nexus Release Repository</name>
-            <url>http://repo.hualala.com/nexus/content/repositories/releases/</url>
-        </repository>
-        <snapshotRepository>
-            <id>nexus-snapshots</id>
-            <name>Nexus Snapshot Repository</name>
-            <url>http://repo.hualala.com/nexus/content/repositories/snapshots/</url>
-        </snapshotRepository>
-    </distributionManagement>
-
     <properties>
         <java.version>1.8</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
