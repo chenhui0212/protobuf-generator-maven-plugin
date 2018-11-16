@@ -1,8 +1,8 @@
 package com.dld.hll.protobuf.generator.maven.plugin;
 
 import com.dld.hll.protobuf.generator.ProtoExecutor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 import org.apache.maven.artifact.DependencyResolutionRequiredException;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -28,9 +28,9 @@ import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.List;
 
-@EqualsAndHashCode(callSuper = true)
+@Getter
+@Setter
 @Mojo(name = "generate", defaultPhase = LifecyclePhase.INITIALIZE)
-@Data
 public class ProtoFileGenerator extends AbstractMojo {
     @Parameter
     private String projectName;
@@ -41,15 +41,16 @@ public class ProtoFileGenerator extends AbstractMojo {
     @Parameter
     private String interfaceArtifactId;
     @Parameter
-    private String extendsInterface;
-    @Parameter
-    private String namePattern;
-    @Parameter
     private String commentClass;
     @Parameter
     private String commentMethodName = "value";
     @Parameter
     private String generatePath;
+
+    @Parameter
+    private String extendsInterface;
+    @Parameter
+    private String namePattern;
 
     @Component
     private MavenProject project;
@@ -61,6 +62,7 @@ public class ProtoFileGenerator extends AbstractMojo {
     private RepositorySystemSession repoSession;
 
     private String jarFile;
+
 
     public void execute() throws MojoExecutionException {
         // 加载环境
@@ -140,7 +142,7 @@ public class ProtoFileGenerator extends AbstractMojo {
     }
 
     /**
-     * 生成Proto文件
+     * 配置环境，生成Proto文件
      */
     @SuppressWarnings("unchecked")
     private void generateProto() throws MojoExecutionException {
@@ -163,12 +165,6 @@ public class ProtoFileGenerator extends AbstractMojo {
             if (jarFile != null) {
                 builder.setJarFile(jarFile);
             }
-            if (hasText(extendsInterface)) {
-                builder.setExtendsInterface(Class.forName(extendsInterface));
-            }
-            if (hasText(namePattern)) {
-                builder.setNamePattern(namePattern);
-            }
             if (hasText(commentClass) && hasText(commentMethodName)) {
                 Class<?> comment = Class.forName(commentClass);
                 if (!Annotation.class.isAssignableFrom(comment)) {
@@ -180,6 +176,13 @@ public class ProtoFileGenerator extends AbstractMojo {
                 builder.setGeneratePath(generatePath);
             }
 
+            if (hasText(extendsInterface)) {
+                builder.setExtendsInterface(Class.forName(extendsInterface));
+            }
+            if (hasText(namePattern)) {
+                builder.setNamePattern(namePattern);
+            }
+
             // 生成文件
             builder.build().executor();
         } catch (Exception e) {
@@ -187,7 +190,7 @@ public class ProtoFileGenerator extends AbstractMojo {
         }
     }
 
-    private static boolean hasText(String str) {
+    private boolean hasText(String str) {
         if (str != null && str.length() > 0) {
             int strLen = str.length();
             for (int i = 0; i < strLen; i++) {
