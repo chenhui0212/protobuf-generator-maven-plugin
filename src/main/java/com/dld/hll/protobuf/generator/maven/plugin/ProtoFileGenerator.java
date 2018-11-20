@@ -35,6 +35,8 @@ public class ProtoFileGenerator extends AbstractMojo {
     @Parameter
     private String projectName;
     @Parameter
+    private String projectPath;
+    @Parameter
     private String projectBasePath;
     @Parameter
     private String scanPackage;
@@ -155,6 +157,9 @@ public class ProtoFileGenerator extends AbstractMojo {
             // 配置 Builder
             if (hasText(projectName)) {
                 builder.setProjectName(projectName);
+            }
+            if (hasText(projectPath)) {
+                builder.setProjectPath(projectPath);
             }
             if (hasText(projectBasePath)) {
                 builder.setProjectBasePath(projectBasePath);
